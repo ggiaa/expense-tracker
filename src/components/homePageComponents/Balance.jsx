@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Box,
   Card,
   CardContent,
   Divider,
+  Skeleton,
   Stack,
   Typography,
 } from "@mui/material";
@@ -11,22 +12,47 @@ import { NumericFormat } from "react-number-format";
 import SouthIcon from "@mui/icons-material/South";
 import NorthIcon from "@mui/icons-material/North";
 import { green, red } from "@mui/material/colors";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAccounts } from "../../features/accounts/accountsSlice";
 
 function Balance() {
+  const dispatch = useDispatch();
+  const accounts = useSelector((state) => state.accounts);
+
+  useEffect(() => {
+    dispatch(fetchAccounts());
+  }, [dispatch]);
+
   return (
     <Stack rowGap={1}>
       <Card>
         <CardContent sx={{ textAlign: "center" }}>
-          <Typography>Balance</Typography>
-          <Typography sx={{ fontWeight: 600, fontSize: 17 }}>
-            <NumericFormat
-              value={100000}
-              displayType={"text"}
-              thousandSeparator="."
-              decimalSeparator=","
-              prefix={"Rp"}
-            />
-          </Typography>
+          {accounts.isLoading ? (
+            <>
+              <Typography>
+                <Skeleton />
+              </Typography>
+              <Typography sx={{ fontWeight: 600, fontSize: 17 }}>
+                <Skeleton />
+              </Typography>
+            </>
+          ) : (
+            <>
+              <Typography>Balance</Typography>
+              <Typography sx={{ fontWeight: 600, fontSize: 17 }}>
+                <NumericFormat
+                  value={accounts.accounts.reduce(
+                    (total, number) => (total += Number(number.amount)),
+                    0
+                  )}
+                  displayType={"text"}
+                  thousandSeparator="."
+                  decimalSeparator=","
+                  prefix={"Rp"}
+                />
+              </Typography>
+            </>
+          )}
         </CardContent>
       </Card>
       <Card>

@@ -6,6 +6,8 @@ import App from "./App.jsx";
 import Home from "./components/pages/Home.jsx";
 import Statistic from "./components/pages/Statistic.jsx";
 import "./index.css";
+import { Provider } from "react-redux";
+import store from "./store/store.js";
 
 const THEME = createTheme({
   typography: {
@@ -26,9 +28,10 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <ThemeProvider theme={THEME}>
-      <RouterProvider router={router} />
-      {/* <App /> */}
-    </ThemeProvider>
+    <Provider store={store}>
+      <ThemeProvider theme={THEME}>
+        <RouterProvider router={router} />
+      </ThemeProvider>
+    </Provider>
   </React.StrictMode>
 );
