@@ -15,10 +15,6 @@ const initialState = {
   isLoading: true,
 };
 
-function timeout(delay) {
-  return new Promise((res) => setTimeout(res, delay));
-}
-
 // FETCH ACCOUNT
 export const fetchAccounts = createAsyncThunk(
   "accounts/fetchAccounts",

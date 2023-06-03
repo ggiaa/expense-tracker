@@ -12,16 +12,10 @@ import { NumericFormat } from "react-number-format";
 import SouthIcon from "@mui/icons-material/South";
 import NorthIcon from "@mui/icons-material/North";
 import { green, red } from "@mui/material/colors";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchAccounts } from "../../features/accounts/accountsSlice";
+import { useSelector } from "react-redux";
 
 function Balance() {
-  const dispatch = useDispatch();
   const accounts = useSelector((state) => state.accounts);
-
-  useEffect(() => {
-    dispatch(fetchAccounts());
-  }, [dispatch]);
 
   return (
     <Stack rowGap={1}>
