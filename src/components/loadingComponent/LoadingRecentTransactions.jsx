@@ -23,7 +23,7 @@ function LoadingRecentTransactions() {
         <Skeleton />
       </Typography>
       {[1, 2, 3, 4, 5, 6].map((transaction) => (
-        <>
+        <Box key={transaction}>
           <Grid container mt={1}>
             <Grid item xs={2}>
               <Box
@@ -62,7 +62,7 @@ function LoadingRecentTransactions() {
             </Grid>
           </Grid>
           <Divider />
-        </>
+        </Box>
       ))}
     </>
   );

@@ -40,8 +40,8 @@ function RecentTransactions() {
           ) : (
             <>
               <Typography mb={2}>Recent Transactions</Typography>
-              {recentTransactions.map((transaction) => (
-                <>
+              {recentTransactions.map((transaction, index) => (
+                <Box key={index}>
                   <Grid container mt={1}>
                     <Grid item xs={2}>
                       <Box
@@ -65,15 +65,21 @@ function RecentTransactions() {
                         />
                       </Box>
                     </Grid>
-                    <Grid item xs={5}>
+                    <Grid item xs={6}>
                       <Typography variant="subtitle2">
-                        {transaction.note}
+                        {transaction.sub_category
+                          ? transaction.category +
+                            " > " +
+                            transaction.sub_category
+                          : transaction.is_income
+                          ? "Income > " + transaction.category
+                          : "Expense > " + transaction.category}
                       </Typography>
                       <Typography variant="caption">
-                        {transaction.account}
+                        {transaction.note}
                       </Typography>
                     </Grid>
-                    <Grid item xs={5} textAlign="right">
+                    <Grid item xs={4} textAlign="right">
                       <Typography
                         variant="subtitle2"
                         color={transaction.is_income ? green[800] : red[600]}
@@ -87,12 +93,19 @@ function RecentTransactions() {
                         />
                       </Typography>
                       <Typography variant="caption">
-                        {moment(transaction.created_at.toDate()).fromNow()}
+                        {moment(transaction.date.toDate()).calendar(null, {
+                          sameDay: "[Today]",
+                          nextDay: "[Tomorrow]",
+                          nextWeek: "dddd",
+                          lastDay: "[Yesterday]",
+                          lastWeek: "D MMM (ddd)",
+                          sameElse: "D MMM (ddd)",
+                        })}
                       </Typography>
                     </Grid>
                   </Grid>
                   <Divider />
-                </>
+                </Box>
               ))}
             </>
           )}

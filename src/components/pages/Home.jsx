@@ -6,6 +6,7 @@ import RecentTransactions from "../homePageComponents/RecentTransactions";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAccounts } from "../../features/accounts/accountsSlice";
 import { fetchTransactions } from "../../features/transactions/transactionSlice";
+import { fetchCategories } from "../../features/categories/categoriesSlice";
 
 function Home() {
   const dispatch = useDispatch();
@@ -13,6 +14,7 @@ function Home() {
   useEffect(() => {
     dispatch(fetchAccounts());
     dispatch(fetchTransactions());
+    dispatch(fetchCategories());
   }, [dispatch]);
   return (
     <>

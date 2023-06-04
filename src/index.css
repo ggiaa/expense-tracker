@@ -7,3 +7,7 @@ body {
 .MuiCardContent-root {
   padding: 12px !important;
 }
+
+.MuiPopover-paper {
+  border-radius: 8px !important;
+}

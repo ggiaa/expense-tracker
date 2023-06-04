@@ -16,19 +16,11 @@ import { blue, green, red } from "@mui/material/colors";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { Outlet, Link } from "react-router-dom";
+import AddTransaction from "../homePageComponents/AddTransaction";
 
 function BottomNavbar() {
   const [value, setValue] = useState(0);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const open = Boolean(anchorEl);
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const [transactionOpen, setTransactionOpen] = useState(false);
 
   return (
     <Box textAlign="center" width="calc(100%/3)" sx={{ marginX: "auto" }}>
@@ -66,7 +58,7 @@ function BottomNavbar() {
                   textAlign: "center",
                   cursor: "pointer",
                 }}
-                onClick={handleClick}
+                onClick={() => setTransactionOpen(true)}
               >
                 <AddIcon
                   fontSize="large"
@@ -83,34 +75,11 @@ function BottomNavbar() {
         />
       </BottomNavigation>
 
-      {/* Add menu */}
-      <Menu
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "center",
-        }}
-        transformOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
-        }}
-      >
-        <MenuItem sx={{ color: red[800] }}>
-          <ListItemIcon>
-            <NorthIcon sx={{ color: red[800] }} fontSize="small" />
-          </ListItemIcon>
-          Expenses
-        </MenuItem>
-        <Divider />
-        <MenuItem sx={{ color: green[800] }}>
-          <ListItemIcon>
-            <SouthIcon sx={{ color: green[800] }} fontSize="small" />
-          </ListItemIcon>
-          Income
-        </MenuItem>
-      </Menu>
+      {/* MODAL ADD TRANSACTION */}
+      <AddTransaction
+        transactionOpen={transactionOpen}
+        setTransactionOpen={setTransactionOpen}
+      />
     </Box>
   );
 }
