@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchAccounts } from "../../features/accounts/accountsSlice";
 import { fetchTransactions } from "../../features/transactions/transactionSlice";
 import { fetchCategories } from "../../features/categories/categoriesSlice";
+import Accounts from "../homePageComponents/Accounts";
 
 function Home() {
   const dispatch = useDispatch();
@@ -23,13 +24,15 @@ function Home() {
           width: "25%",
           display: "flex",
           flexDirection: "column",
-          rowGap: 3,
+          rowGap: 1,
         }}
       >
         <Balance />
         <RecentTransactions />
       </Box>
-      <Box sx={{ width: "75%" }}>{/* <Accounts /> */}</Box>
+      <Box sx={{ width: "75%" }}>
+        <Accounts />
+      </Box>
     </>
   );
 }
