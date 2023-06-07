@@ -29,20 +29,22 @@ function Accounts() {
           <Typography fontWeight={600} mb={1} fontSize={15}>
             Accounts
           </Typography>
-          <Box sx={{ display: "flex" }}>
-            <Box sx={{ display: "flex", width: "100%" }}>
-              {pinnedAccounts.map((account) => (
+          <Grid container spacing={3}>
+            {pinnedAccounts.map((account) => (
+              <Grid item xs={3}>
                 <Card
                   key={account.pinned_order}
                   sx={{
                     bgcolor: green[500],
                     color: "white",
-                    width: "calc(100%/4)",
-                    marginRight: 2,
                   }}
                 >
                   <CardContent
-                    sx={{ display: "flex", alignItems: "center", columnGap: 2 }}
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      columnGap: 2,
+                    }}
                   >
                     <Grid container columnGap={2}>
                       <Grid item xs={3}>
@@ -88,9 +90,9 @@ function Accounts() {
                     </Grid>
                   </CardContent>
                 </Card>
-              ))}
-            </Box>
-          </Box>
+              </Grid>
+            ))}
+          </Grid>
         </>
       )}
     </Box>
