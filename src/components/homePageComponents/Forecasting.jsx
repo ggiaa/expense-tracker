@@ -5,7 +5,7 @@ import React from "react";
 function Forecasting() {
   return (
     <Box sx={{ height: "100%" }}>
-      <Card sx={{ height: "95%" }}>
+      <Card sx={{ height: "100%" }}>
         <CardContent>
           <Typography>Forecasting</Typography>
         </CardContent>

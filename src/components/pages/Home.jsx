@@ -10,6 +10,7 @@ import { fetchCategories } from "../../features/categories/categoriesSlice";
 import Accounts from "../homePageComponents/Accounts";
 import Forecasting from "../homePageComponents/Forecasting";
 import BudgetSpending from "../homePageComponents/BudgetSpending";
+import SavingPlans from "../homePageComponents/SavingPlans";
 
 function Home() {
   const dispatch = useDispatch();
@@ -20,7 +21,14 @@ function Home() {
     dispatch(fetchCategories());
   }, [dispatch]);
   return (
-    <>
+    <Box
+      sx={{
+        display: "flex",
+        width: "100%",
+        columnGap: 1.5,
+        height: "97%",
+      }}
+    >
       <Box
         sx={{
           width: "25%",
@@ -36,23 +44,33 @@ function Home() {
         sx={{
           display: "flex",
           flexDirection: "column",
-          width: "75%",
+          width: "55%",
           rowGap: 2,
         }}
       >
         <Accounts />
-        {/* <Box sx={{ height: "100%" }}> */}
-        <Grid container spacing={1} sx={{ height: "100%" }}>
-          <Grid item xs={9}>
-            <Forecasting />
-          </Grid>
-          <Grid item xs={3}>
-            <BudgetSpending />
-          </Grid>
-        </Grid>
-        {/* </Box> */}
+        <Forecasting />
       </Box>
-    </>
+      <Box
+        sx={{
+          width: "20%",
+          display: "flex",
+          flexDirection: "column",
+          rowGap: 1,
+        }}
+      >
+        <SavingPlans />
+        <BudgetSpending />
+      </Box>
+    </Box>
+    // <Grid container spacing={2}>
+    //   <Grid item xs={3}>
+    //   </Grid>
+    //   <Grid item xs={7}>
+    //   </Grid>
+    //   <Grid item xs={2}>
+    //   </Grid>
+    // </Grid>
   );
 }
 

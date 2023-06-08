@@ -31,9 +31,8 @@ function Accounts() {
           </Typography>
           <Grid container spacing={3}>
             {pinnedAccounts.map((account) => (
-              <Grid item xs={3}>
+              <Grid item xs={3} key={account.pinned_order}>
                 <Card
-                  key={account.pinned_order}
                   sx={{
                     bgcolor: green[500],
                     color: "white",

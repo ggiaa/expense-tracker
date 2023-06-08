@@ -31,7 +31,7 @@ function RecentTransactions() {
           display: "flex",
           flexDirection: "column",
           rowGap: 1,
-          height: "94.5%",
+          height: "100%",
         }}
       >
         <CardContent>
