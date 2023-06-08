@@ -26,7 +26,7 @@ function Home() {
         display: "flex",
         width: "100%",
         columnGap: 1.5,
-        height: "97%",
+        height: "98%",
       }}
     >
       <Box
@@ -34,7 +34,7 @@ function Home() {
           width: "25%",
           display: "flex",
           flexDirection: "column",
-          rowGap: 1,
+          rowGap: 2,
         }}
       >
         <Balance />
@@ -63,14 +63,6 @@ function Home() {
         <BudgetSpending />
       </Box>
     </Box>
-    // <Grid container spacing={2}>
-    //   <Grid item xs={3}>
-    //   </Grid>
-    //   <Grid item xs={7}>
-    //   </Grid>
-    //   <Grid item xs={2}>
-    //   </Grid>
-    // </Grid>
   );
 }
 

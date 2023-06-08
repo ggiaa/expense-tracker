@@ -19,6 +19,8 @@ import { fetchTransactions } from "../../features/transactions/transactionSlice"
 import { NumericFormat } from "react-number-format";
 import moment from "moment";
 import LoadingRecentTransactions from "../loadingComponent/LoadingRecentTransactions";
+import KeyboardDoubleArrowRightIcon from "@mui/icons-material/KeyboardDoubleArrowRight";
+import { Outlet, Navigate, Link } from "react-router-dom";
 
 function RecentTransactions() {
   const transactions = useSelector((state) => state.transactions);
@@ -40,73 +42,81 @@ function RecentTransactions() {
           ) : (
             <>
               <Typography mb={2}>Recent Transactions</Typography>
-              {recentTransactions.map((transaction, index) => (
-                <Box key={index}>
-                  <Grid container mt={1}>
-                    <Grid item xs={2}>
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          bgcolor: blue[800],
-                          borderRadius: 99,
-                          height: "80%",
-                          aspectRatio: 1 / 1,
-                          textAlign: "center",
-                          opacity: "75%",
-                        }}
-                      >
-                        <HomeIcon
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  height: "98.3%",
+                }}
+              >
+                {recentTransactions.map((transaction, index) => (
+                  <Box key={index} height="calc(100%/5)">
+                    <Grid container mt={1}>
+                      <Grid item xs={2}>
+                        <Box
                           sx={{
-                            color: "white",
-                            marginX: "auto",
-                            marginY: "auto",
+                            display: "flex",
+                            alignItems: "center",
+                            bgcolor: blue[800],
+                            borderRadius: 99,
+                            height: "80%",
+                            aspectRatio: 1 / 1,
+                            textAlign: "center",
+                            opacity: "75%",
                           }}
-                        />
-                      </Box>
+                        >
+                          <HomeIcon
+                            sx={{
+                              color: "white",
+                              marginX: "auto",
+                              marginY: "auto",
+                            }}
+                          />
+                        </Box>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <Typography variant="subtitle2">
+                          {transaction.sub_category
+                            ? transaction.category +
+                              " > " +
+                              transaction.sub_category
+                            : transaction.is_income
+                            ? "Income > " + transaction.category
+                            : "Expense > " + transaction.category}
+                        </Typography>
+                        <Typography variant="caption">
+                          {transaction.note}
+                        </Typography>
+                      </Grid>
+                      <Grid item xs={4} textAlign="right">
+                        <Typography
+                          variant="subtitle2"
+                          color={transaction.is_income ? green[800] : red[600]}
+                        >
+                          <NumericFormat
+                            value={transaction.amount}
+                            displayType={"text"}
+                            thousandSeparator="."
+                            decimalSeparator=","
+                            prefix={"Rp"}
+                          />
+                        </Typography>
+                        <Typography variant="caption">
+                          {moment(transaction.date.toDate()).calendar(null, {
+                            sameDay: "[Today]",
+                            nextDay: "[Tomorrow]",
+                            nextWeek: "dddd",
+                            lastDay: "[Yesterday]",
+                            lastWeek: "D MMM (ddd)",
+                            sameElse: "D MMM (ddd)",
+                          })}
+                        </Typography>
+                      </Grid>
                     </Grid>
-                    <Grid item xs={6}>
-                      <Typography variant="subtitle2">
-                        {transaction.sub_category
-                          ? transaction.category +
-                            " > " +
-                            transaction.sub_category
-                          : transaction.is_income
-                          ? "Income > " + transaction.category
-                          : "Expense > " + transaction.category}
-                      </Typography>
-                      <Typography variant="caption">
-                        {transaction.note}
-                      </Typography>
-                    </Grid>
-                    <Grid item xs={4} textAlign="right">
-                      <Typography
-                        variant="subtitle2"
-                        color={transaction.is_income ? green[800] : red[600]}
-                      >
-                        <NumericFormat
-                          value={transaction.amount}
-                          displayType={"text"}
-                          thousandSeparator="."
-                          decimalSeparator=","
-                          prefix={"Rp"}
-                        />
-                      </Typography>
-                      <Typography variant="caption">
-                        {moment(transaction.date.toDate()).calendar(null, {
-                          sameDay: "[Today]",
-                          nextDay: "[Tomorrow]",
-                          nextWeek: "dddd",
-                          lastDay: "[Yesterday]",
-                          lastWeek: "D MMM (ddd)",
-                          sameElse: "D MMM (ddd)",
-                        })}
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                  <Divider />
-                </Box>
-              ))}
+                    <Divider />
+                  </Box>
+                ))}
+              </Box>
             </>
           )}
         </CardContent>
