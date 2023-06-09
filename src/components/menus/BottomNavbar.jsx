@@ -5,7 +5,7 @@ import {
   ListItemIcon,
   Box,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
@@ -19,16 +19,21 @@ import { Outlet, Link } from "react-router-dom";
 import AddTransaction from "../homePageComponents/AddTransaction";
 
 function BottomNavbar() {
+  const urlArray = ["", "statistic"];
+  const urlPage = window.location.pathname.substring(1).split("/")[0];
+
   const [value, setValue] = useState(0);
   const [transactionOpen, setTransactionOpen] = useState(false);
+
+  useEffect(() => {
+    setValue(urlArray.indexOf(urlPage));
+  }, []);
 
   return (
     <Box textAlign="center" width="calc(100%/3)" sx={{ marginX: "auto" }}>
       <BottomNavigation
         value={value}
-        onChange={(event, newValue) => {
-          setValue(newValue);
-        }}
+        onChange={(event, newValue) => setValue(newValue)}
         sx={{ borderRadius: 8, boxShadow: 10 }}
       >
         <BottomNavigationAction
