@@ -5,7 +5,10 @@ import Balance from "../homePageComponents/Balance";
 import RecentTransactions from "../homePageComponents/RecentTransactions";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchAccounts } from "../../features/accounts/accountsSlice";
-import { fetchTransactions } from "../../features/transactions/transactionSlice";
+import {
+  fetchMasterTransaction,
+  fetchTransactions,
+} from "../../features/transactions/transactionSlice";
 import { fetchCategories } from "../../features/categories/categoriesSlice";
 import Accounts from "../homePageComponents/Accounts";
 import Forecasting from "../homePageComponents/Forecasting";
@@ -19,6 +22,7 @@ function Home() {
     dispatch(fetchAccounts());
     dispatch(fetchTransactions());
     dispatch(fetchCategories());
+    dispatch(fetchMasterTransaction());
   }, [dispatch]);
   return (
     <Box
