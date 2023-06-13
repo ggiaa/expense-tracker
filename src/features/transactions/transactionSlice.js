@@ -16,7 +16,8 @@ import { date } from "yup";
 const initialState = {
   transactions: [],
   recentTransactions: [],
-  masterTransactions: [],
+  monthlyMasterTransactions: [],
+  currentWeekMasterTransactions: [],
   isLoading: true,
 };
 
@@ -34,21 +35,46 @@ export const fetchTransactions = createAsyncThunk(
       id: doc.id,
     }));
 
-    // Get master transaction
-    const masterTransation = query(
+    // Get monthly master transaction
+    const monthlyMasterTransation = query(
       collection(db, "master_transactions"),
       where("created_at", ">=", new Date(moment().startOf("month"))),
       where("created_at", "<=", new Date(moment().endOf("month"))),
       orderBy("created_at")
     );
 
-    const masterTransactionResponse = await getDocs(masterTransation);
-    const masterTransaction = masterTransactionResponse.docs.map((doc) => ({
-      ...doc.data(),
-      id: doc.id,
-    }));
+    const monthlyMasterTransactionResponse = await getDocs(
+      monthlyMasterTransation
+    );
+    const monthlyMasterTransaction = monthlyMasterTransactionResponse.docs.map(
+      (doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      })
+    );
 
-    return { transactions, masterTransaction };
+    // Get current week master transaction
+    const currentWeekMasterTransations = query(
+      collection(db, "master_transactions"),
+      where("created_at", ">=", new Date(moment().startOf("week"))),
+      where("created_at", "<=", new Date(moment().endOf("week"))),
+      orderBy("created_at")
+    );
+
+    const currentWeekMasterTransactionsResponse = await getDocs(
+      currentWeekMasterTransations
+    );
+    const currentWeekMasterTransactions =
+      currentWeekMasterTransactionsResponse.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+
+    return {
+      transactions,
+      monthlyMasterTransaction,
+      currentWeekMasterTransactions,
+    };
   }
 );
 
@@ -102,7 +128,10 @@ const transactionsSlice = createSlice({
     builder.addCase(fetchTransactions.fulfilled, (state, action) => {
       state.transactions = action.payload.transactions;
       state.recentTransactions = action.payload.transactions.slice(0, 5);
-      state.masterTransactions = action.payload.masterTransaction;
+      state.monthlyMasterTransactions = action.payload.monthlyMasterTransaction;
+      state.currentWeekMasterTransactions =
+        action.payload.currentWeekMasterTransactions;
+      state.isLoading = false;
 
       // console.log(action.payload);
 
@@ -113,7 +142,6 @@ const transactionsSlice = createSlice({
       //     new Date(data.date.seconds * 1000) >= firstDateOfCurrentWeek &&
       //     new Date(data.date.seconds * 1000) <= lastDateOfCurrentWeek
       // );
-      state.isLoading = false;
     });
     builder.addCase(fetchTransactions.pending, (state, action) => {
       state.isLoading = true;

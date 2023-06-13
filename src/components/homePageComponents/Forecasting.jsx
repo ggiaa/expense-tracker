@@ -27,10 +27,11 @@ function Forecasting() {
   });
 
   const forecastingAll = useSelector((data) => data.transactions);
-  const forecasting = forecastingAll.currentWeekTransaction;
-  console.log(forecastingAll);
+  const forecasting = forecastingAll;
+  console.log(forecasting);
 
-  const firstDateOfCurrentWeek = moment().startOf("week");
+  const firstDateOfCurrentWeek = moment().startOf("week").date();
+  // console.log(firstDateOfCurrentWeek.date());
   const lastDateOfCurrentWeek = moment().endOf("week");
 
   // console.log(income);
