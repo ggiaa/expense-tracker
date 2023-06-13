@@ -15,23 +15,40 @@ import { date } from "yup";
 
 const initialState = {
   transactions: [],
-  recentTransaction: [],
-  currentWeekTransaction: [],
+  recentTransactions: [],
+  masterTransactions: [],
   isLoading: true,
 };
 
 export const fetchTransactions = createAsyncThunk(
   "transactions/fetchTrasactions",
   async () => {
-    const q = query(collection(db, "transactions"), orderBy("date", "desc"));
-
-    const fetchResult = await getDocs(q);
-    const filteredData = fetchResult.docs.map((doc) => ({
+    // Get all Transactions
+    const transactionQuery = query(
+      collection(db, "transactions"),
+      orderBy("date", "desc")
+    );
+    const transactionsResponse = await getDocs(transactionQuery);
+    const transactions = transactionsResponse.docs.map((doc) => ({
       ...doc.data(),
       id: doc.id,
     }));
 
-    return filteredData;
+    // Get master transaction
+    const masterTransation = query(
+      collection(db, "master_transactions"),
+      where("created_at", ">=", new Date(moment().startOf("month"))),
+      where("created_at", "<=", new Date(moment().endOf("month"))),
+      orderBy("created_at")
+    );
+
+    const masterTransactionResponse = await getDocs(masterTransation);
+    const masterTransaction = masterTransactionResponse.docs.map((doc) => ({
+      ...doc.data(),
+      id: doc.id,
+    }));
+
+    return { transactions, masterTransaction };
   }
 );
 
@@ -83,28 +100,25 @@ const transactionsSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder.addCase(fetchTransactions.fulfilled, (state, action) => {
-      state.transactions = action.payload;
-      state.recentTransaction = action.payload.slice(0, 5);
+      state.transactions = action.payload.transactions;
+      state.recentTransactions = action.payload.transactions.slice(0, 5);
+      state.masterTransactions = action.payload.masterTransaction;
 
-      const firstDateOfCurrentWeek = moment().startOf("week");
-      const lastDateOfCurrentWeek = moment().endOf("week");
-      state.currentWeekTransaction = action.payload.filter(
-        (data) =>
-          new Date(data.date.seconds * 1000) >= firstDateOfCurrentWeek &&
-          new Date(data.date.seconds * 1000) <= lastDateOfCurrentWeek
-      );
+      // console.log(action.payload);
+
+      // const firstDateOfCurrentWeek = moment().startOf("week");
+      // const lastDateOfCurrentWeek = moment().endOf("week");
+      // state.currentWeekTransaction = action.payload.filter(
+      //   (data) =>
+      //     new Date(data.date.seconds * 1000) >= firstDateOfCurrentWeek &&
+      //     new Date(data.date.seconds * 1000) <= lastDateOfCurrentWeek
+      // );
       state.isLoading = false;
     });
     builder.addCase(fetchTransactions.pending, (state, action) => {
-      state.transactions = [];
-      state.recentTransaction = [];
-      state.currentWeekTransaction = [];
       state.isLoading = true;
     });
     builder.addCase(fetchTransactions.rejected, (state, action) => {
-      state.transactions = [];
-      state.recentTransaction = [];
-      state.currentWeekTransaction = [];
       state.isLoading = false;
     });
 
@@ -127,31 +141,42 @@ const transactionsSlice = createSlice({
       state.isLoading = false;
     });
 
-    builder.addCase(fetchMasterTransaction.fulfilled, (state, action) => {
-      state.currentWeekTransaction = action.payload;
-      // state.transactions = action.payload;
-      // state.recentTransaction = action.payload.slice(0, 5);
-      // const firstDateOfCurrentWeek = moment().startOf("week");
-      // const lastDateOfCurrentWeek = moment().endOf("week");
-      // state.currentWeekTransaction = action.payload.filter(
-      //   (data) =>
-      //     new Date(data.date.seconds * 1000) >= firstDateOfCurrentWeek &&
-      //     new Date(data.date.seconds * 1000) <= lastDateOfCurrentWeek
-      // );
-      // state.isLoading = false;
-    });
-    builder.addCase(fetchMasterTransaction.pending, (state, action) => {
-      // state.transactions = [];
-      // state.recentTransaction = [];
-      // state.currentWeekTransaction = [];
-      state.isLoading = true;
-    });
-    builder.addCase(fetchMasterTransaction.rejected, (state, action) => {
-      // state.transactions = [];
-      // state.recentTransaction = [];
-      // state.currentWeekTransaction = [];
-      state.isLoading = false;
-    });
+    // builder.addCase(fetchMasterTransaction.fulfilled, (state, action) => {
+    //   state.transactions = action.payload;
+    //   state.recentTransaction = action.payload.slice(0, 5);
+
+    //   const firstDateOfCurrentWeek = moment().startOf("week");
+    //   const lastDateOfCurrentWeek = moment().endOf("week");
+    //   state.currentWeekTransaction = action.payload.filter(
+    //     (data) =>
+    //       new Date(data.date.seconds * 1000) >= firstDateOfCurrentWeek &&
+    //       new Date(data.date.seconds * 1000) <= lastDateOfCurrentWeek
+    //   );
+    //   state.isLoading = false;
+    //   // state.currentWeekTransaction = action.payload;
+    //   // state.transactions = action.payload;
+    //   // state.recentTransaction = action.payload.slice(0, 5);
+    //   // const firstDateOfCurrentWeek = moment().startOf("week");
+    //   // const lastDateOfCurrentWeek = moment().endOf("week");
+    //   // state.currentWeekTransaction = action.payload.filter(
+    //   //   (data) =>
+    //   //     new Date(data.date.seconds * 1000) >= firstDateOfCurrentWeek &&
+    //   //     new Date(data.date.seconds * 1000) <= lastDateOfCurrentWeek
+    //   // );
+    //   // state.isLoading = false;
+    // });
+    // builder.addCase(fetchMasterTransaction.pending, (state, action) => {
+    //   state.transactions = [];
+    //   state.recentTransaction = [];
+    //   state.currentWeekTransaction = [];
+    //   state.isLoading = true;
+    // });
+    // builder.addCase(fetchMasterTransaction.rejected, (state, action) => {
+    //   state.transactions = [];
+    //   state.recentTransaction = [];
+    //   state.currentWeekTransaction = [];
+    //   state.isLoading = false;
+    // });
 
     // builder.addCase(addTransaction.fulfilled, (state, action) => {
     //   const newRecord = action.payload.data;

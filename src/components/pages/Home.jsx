@@ -22,7 +22,7 @@ function Home() {
     dispatch(fetchAccounts());
     dispatch(fetchTransactions());
     dispatch(fetchCategories());
-    dispatch(fetchMasterTransaction());
+    // dispatch(fetchMasterTransaction());
   }, [dispatch]);
   return (
     <Box

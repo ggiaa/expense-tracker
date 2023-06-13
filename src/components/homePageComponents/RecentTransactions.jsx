@@ -24,7 +24,7 @@ import { Outlet, Navigate, Link } from "react-router-dom";
 
 function RecentTransactions() {
   const transactions = useSelector((state) => state.transactions);
-  const recentTransactions = transactions.recentTransaction;
+  const recentTransactions = transactions.recentTransactions;
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -50,7 +50,7 @@ function RecentTransactions() {
                 }}
               >
                 {recentTransactions.map((transaction, index) => (
-                  <Box key={index} height="calc(100%/5)">
+                  <Box key={index}>
                     <Grid container mt={1}>
                       <Grid item xs={2}>
                         <Box

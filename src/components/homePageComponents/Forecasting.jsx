@@ -26,103 +26,106 @@ function Forecasting() {
     Sat: 0,
   });
 
-  console.log(useSelector((data) => data));
   const forecastingAll = useSelector((data) => data.transactions);
   const forecasting = forecastingAll.currentWeekTransaction;
+  console.log(forecastingAll);
 
   const firstDateOfCurrentWeek = moment().startOf("week");
   const lastDateOfCurrentWeek = moment().endOf("week");
 
   // console.log(income);
-  const setIncomeExpense = () => {
-    setIncome({
-      Sun: 0,
-      Mon: 0,
-      Tue: 0,
-      Wed: 0,
-      Thu: 0,
-      Fri: 0,
-      Sat: 0,
-    });
-    setExpenses({
-      Sun: 0,
-      Mon: 0,
-      Tue: 0,
-      Wed: 0,
-      Thu: 0,
-      Fri: 0,
-      Sat: 0,
-    });
+  // const setIncomeExpense = () => {
+  //   // setIncome({
+  //   //   Sun: 0,
+  //   //   Mon: 0,
+  //   //   Tue: 0,
+  //   //   Wed: 0,
+  //   //   Thu: 0,
+  //   //   Fri: 0,
+  //   //   Sat: 0,
+  //   // });
+  //   // setExpenses({
+  //   //   Sun: 0,
+  //   //   Mon: 0,
+  //   //   Tue: 0,
+  //   //   Wed: 0,
+  //   //   Thu: 0,
+  //   //   Fri: 0,
+  //   //   Sat: 0,
+  //   // });
 
-    forecastingAll?.currentWeekTransaction.map((transaction) => {
-      const transactionDate = new Date(transaction.date.seconds * 1000);
-      if (
-        transaction.is_income &&
-        transactionDate >= firstDateOfCurrentWeek &&
-        transactionDate <= lastDateOfCurrentWeek
-      ) {
-        const dayName = day[transactionDate.getDay()];
-        setIncome({
-          ...income,
-          [dayName]: (income[dayName] += parseInt(transaction.amount)),
-        });
-      }
-      if (
-        transaction.is_expense &&
-        transactionDate >= firstDateOfCurrentWeek &&
-        transactionDate <= lastDateOfCurrentWeek
-      ) {
-        const dayName = day[transactionDate.getDay()];
-        setExpenses({
-          ...expenses,
-          [dayName]: (expenses[dayName] += parseInt(transaction.amount)),
-        });
-      }
-    });
-    //   setExpenses({
-    //     ...expenses,
-    //     Sun: 0,
-    //     Mon: 0,
-    //     Tue: 0,
-    //     Wed: 0,
-    //     Thu: 0,
-    //     Fri: 0,
-    //     Sat: 0,
-    //   });
-    //   console.log(["income"].concat(Object.values(income)));
-    //   console.log(expenses);
-    //   forecasting.map((trans) => {
-    //     console.log("masuk");
-    //     const transactionDate = new Date(trans.date.seconds * 1000);
-    //     if (
-    //       trans.is_income &&
-    //       transactionDate >= firstDateOfCurrentWeek &&
-    //       transactionDate <= lastDateOfCurrentWeek
-    //     ) {
-    //       const dayIndex = day[transactionDate.getDay()];
-    //       console.log(dayIndex);
-    //       setIncome({
-    //         ...income,
-    //         dayIndex: (income[dayIndex] += parseInt(trans.amount)),
-    //       });
-    //     }
-    //     // if (
-    //     //   trans.is_expense &&
-    //     //   transactionDate >= firstDateOfCurrentWeek &&
-    //     //   transactionDate <= lastDateOfCurrentWeek
-    //     // ) {
-    //     //   const dayIndex = day[transactionDate.getDay()];
-    //     //   setExpenses({
-    //     //     ...expenses,
-    //     //     dayIndex: (expenses[dayIndex] += parseInt(trans.amount)),
-    //     //   });
-    //     // }
-    //   });
-  };
+  //   forecastingAll?.currentWeekTransaction.map((transaction) => {
+  //     const transactionDate = new Date(transaction.date.seconds * 1000);
+  //     if (
+  //       transaction.is_income &&
+  //       transactionDate >= firstDateOfCurrentWeek &&
+  //       transactionDate <= lastDateOfCurrentWeek
+  //     ) {
+  //       const dayName = day[transactionDate.getDay()];
+  //       setIncome({
+  //         ...income,
+  //         [dayName]: (income[dayName] += parseInt(transaction.amount)),
+  //       });
+  //     }
+
+  //     if (
+  //       transaction.is_expense &&
+  //       transactionDate >= firstDateOfCurrentWeek &&
+  //       transactionDate <= lastDateOfCurrentWeek
+  //     ) {
+  //       const dayName = day[transactionDate.getDay()];
+  //       setExpenses({
+  //         ...expenses,
+  //         [dayName]: (expenses[dayName] += parseInt(transaction.amount)),
+  //       });
+  //     }
+  //   });
+
+  //   console.log(expenses);
+  //   // setExpenses({
+  //   //   ...expenses,
+  //   //   Sun: 0,
+  //   //   Mon: 0,
+  //   //   Tue: 0,
+  //   //   Wed: 0,
+  //   //   Thu: 0,
+  //   //   Fri: 0,
+  //   //   Sat: 0,
+  //   // });
+  //   // console.log(["income"].concat(Object.values(income)));
+  //   // console.log(expenses);
+  //   // forecasting.map((trans) => {
+  //   //   console.log("masuk");
+  //   //   const transactionDate = new Date(trans.date.seconds * 1000);
+  //   //   if (
+  //   //     trans.is_income &&
+  //   //     transactionDate >= firstDateOfCurrentWeek &&
+  //   //     transactionDate <= lastDateOfCurrentWeek
+  //   //   ) {
+  //   //     const dayIndex = day[transactionDate.getDay()];
+  //   //     console.log(dayIndex);
+  //   //     setIncome({
+  //   //       ...income,
+  //   //       dayIndex: (income[dayIndex] += parseInt(trans.amount)),
+  //   //     });
+  //   //   }
+  //   //   // if (
+  //   //   //   trans.is_expense &&
+  //   //   //   transactionDate >= firstDateOfCurrentWeek &&
+  //   //   //   transactionDate <= lastDateOfCurrentWeek
+  //   //   // ) {
+  //   //   //   const dayIndex = day[transactionDate.getDay()];
+  //   //   //   setExpenses({
+  //   //   //     ...expenses,
+  //   //   //     dayIndex: (expenses[dayIndex] += parseInt(trans.amount)),
+  //   //   //   });
+  //   //   // }
+  //   // });
+  // };
 
   useEffect(() => {
-    setIncomeExpense();
-  }, [forecasting]);
+    // setIncomeExpense();
+  }, [forecastingAll]);
 
   const option = {
     tooltip: {},
