@@ -14,6 +14,7 @@ import Accounts from "../homePageComponents/Accounts";
 import Forecasting from "../homePageComponents/Forecasting";
 import BudgetSpending from "../homePageComponents/BudgetSpending";
 import SavingPlans from "../homePageComponents/SavingPlans";
+import moment from "moment";
 
 function Home() {
   const dispatch = useDispatch();

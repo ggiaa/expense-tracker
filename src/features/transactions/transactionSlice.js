@@ -1,11 +1,16 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import {
   addDoc,
+  arrayUnion,
   collection,
+  doc,
   getDocs,
+  increment,
   limit,
   orderBy,
   query,
+  setDoc,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import RecentTransactions from "../../components/homePageComponents/RecentTransactions";
@@ -81,17 +86,53 @@ export const fetchTransactions = createAsyncThunk(
 export const addTransaction = createAsyncThunk(
   "transactions/addTransaction",
   async (params) => {
-    const response = await addDoc(collection(db, "transactions"), params);
-    const q = await query(
-      collection(db, "transactions"),
-      orderBy("date", "desc")
-    );
+    const docID = moment().format("DD MMMM YYYY");
+    const created_at = params.created_at;
+    const income = params.is_income ? params.amount : 0;
+    const expense = params.is_expense ? params.amount : 0;
 
-    const fetchResult = await getDocs(q);
-    const filteredData = fetchResult.docs.map((doc) => ({
-      ...doc.data(),
-      id: doc.id,
-    }));
+    const response = await addDoc(collection(db, "transactions"), params);
+    // .then(
+    //   (docRef) => {
+    //     const masterTransactionRef = doc(db, "master_transactions", docID);
+    //     setDoc(
+    //       masterTransactionRef,
+    //       {
+    //         created_at,
+    //         detail_transaction: arrayUnion(docRef),
+    //         income: increment(income),
+    //         expense: increment(expense),
+    //       },
+    //       { merge: true }
+    //     );
+
+    //     return docRef;
+    //   }
+    // );
+
+    try {
+      console.log(response.docs);
+      // response.docs.map((doc) => console.log("aaa" + doc));
+    } catch (error) {
+      console.log(error);
+    }
+
+    // console.log(filteredData);
+    // const filteredData = response.docs.map((doc) => ({
+    //   ...doc.data(),
+    //   id: doc.id,
+    // }));
+    // console.log(response);
+    // const q = await query(
+    //   collection(db, "transactions"),
+    //   orderBy("date", "desc")
+    // );
+
+    // const fetchResult = await getDocs(q);
+    // const filteredData = fetchResult.docs.map((doc) => ({
+    //   ...doc.data(),
+    //   id: doc.id,
+    // }));
 
     return filteredData;
   }
